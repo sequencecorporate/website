@@ -1,19 +1,17 @@
-# Sequence Corporate website — V8 launch candidate
+# Sequence Corporate website – V10
 
-Static Sequence Corporate website deployed to Cloudflare Workers with Static Assets.
+V10 keeps the V9 site and contact form, but sends contact-form enquiries through Microsoft Graph using the existing Microsoft 365 tenant.
 
-## Contact form
+Cloudflare Worker runtime values required:
 
-The contact form posts to `/api/contact`, handled by `worker.js`.
+- `TURNSTILE_SECRET` – Secret
+- `MS_TENANT_ID` – Secret or plain text variable
+- `MS_CLIENT_ID` – Secret or plain text variable
+- `MS_CLIENT_SECRET` – Secret
+- `MS_SENDER_UPN` – Secret or plain text variable; use the Microsoft 365 mailbox that will send the message, e.g. `Kevin.Maguire@sequencecorporate.life`
 
-Cloudflare environment/secrets required on the `website` Worker:
+The Entra application requires Microsoft Graph **Application** permission `Mail.Send` with admin consent. The Worker uses the OAuth 2.0 client-credentials flow and `POST /users/{MS_SENDER_UPN}/sendMail`.
 
-- `TURNSTILE_SECRET` — private Turnstile widget secret. Do not commit this value to GitHub.
-- `CF_ACCOUNT_ID` — Cloudflare account ID used by Email Sending REST API.
-- `CF_EMAIL_API_TOKEN` — API token with Email Sending: Edit permission. Do not commit this value to GitHub.
+For least privilege, restrict the application's Exchange Online scope to the intended sender mailbox using Exchange Online Application RBAC.
 
-Public Turnstile site key embedded in `contact.html`:
-
-`0x4AAAAAAEt1tBxW5BlvfXlB`
-
-The server validates Turnstile success, the current deployment hostname, and action `contact` before sending an enquiry email.
+Do not put the Microsoft client secret or Turnstile secret in GitHub.

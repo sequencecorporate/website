@@ -1,5 +1,4 @@
 const RECIPIENT = "Kevin.Maguire@sequencecorporate.life";
-const SENDER = "website@sequencecorporate.life";
 const TURNSTILE_ACTION = "contact";
 
 function escapeHtml(value = "") {
@@ -72,7 +71,13 @@ async function handleContact(request, env) {
       );
     }
 
-    if (!env.TURNSTILE_SECRET || !env.CF_ACCOUNT_ID || !env.CF_EMAIL_API_TOKEN) {
+    if (
+      !env.TURNSTILE_SECRET ||
+      !env.MS_TENANT_ID ||
+      !env.MS_CLIENT_ID ||
+      !env.MS_CLIENT_SECRET ||
+      !env.MS_SENDER_UPN
+    ) {
       console.error("Contact form environment is incomplete");
       return responsePage(
         "Contact form not yet configured",
@@ -117,30 +122,65 @@ async function handleContact(request, env) {
     const text = `New Sequence Corporate website enquiry\n\nName: ${name}\nEmail: ${email}\nCompany: ${company || "Not provided"}\n\nMessage:\n${message}`;
     const html = `<h2>New Sequence Corporate website enquiry</h2><p><strong>Name:</strong> ${escapeHtml(name)}<br><strong>Email:</strong> ${escapeHtml(email)}<br><strong>Company:</strong> ${escapeHtml(company || "Not provided")}</p><p><strong>Message:</strong></p><p>${escapeHtml(message).replace(/\n/g, "<br>")}</p>`;
 
-    const send = await fetch(
-      `https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/email/sending/send`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${env.CF_EMAIL_API_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          to: RECIPIENT,
-          from: { address: SENDER, name: "Sequence Corporate website" },
-          replyTo: email,
-          subject,
-          text,
-          html,
-        }),
-      },
-    );
+    try {
+      const tokenBody = new URLSearchParams({
+        client_id: env.MS_CLIENT_ID,
+        client_secret: env.MS_CLIENT_SECRET,
+        scope: "https://graph.microsoft.com/.default",
+        grant_type: "client_credentials",
+      });
 
-    const result = await send.json();
-    if (!send.ok || !result.success) {
+      const tokenResponse = await fetch(
+        `https://login.microsoftonline.com/${encodeURIComponent(env.MS_TENANT_ID)}/oauth2/v2.0/token`,
+        {
+          method: "POST",
+          headers: { "content-type": "application/x-www-form-urlencoded" },
+          body: tokenBody,
+        },
+      );
+
+      if (!tokenResponse.ok) {
+        const tokenError = await tokenResponse.text();
+        console.error("Microsoft token request failed", tokenResponse.status, tokenError);
+        throw new Error("Unable to authenticate email service");
+      }
+
+      const tokenJson = await tokenResponse.json();
+      const accessToken = tokenJson.access_token;
+      if (!accessToken) throw new Error("Microsoft token response contained no access token");
+
+      const graphResponse = await fetch(
+        `https://graph.microsoft.com/v1.0/users/${encodeURIComponent(env.MS_SENDER_UPN)}/sendMail`,
+        {
+          method: "POST",
+          headers: {
+            authorization: `Bearer ${accessToken}`,
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            message: {
+              subject,
+              body: { contentType: "HTML", content: html },
+              toRecipients: [
+                { emailAddress: { address: RECIPIENT } },
+              ],
+              replyTo: [
+                { emailAddress: { address: email, name } },
+              ],
+            },
+            saveToSentItems: true,
+          }),
+        },
+      );
+
+      if (!graphResponse.ok) {
+        const graphError = await graphResponse.text();
+        console.error("Microsoft Graph sendMail failed", graphResponse.status, graphError);
+        throw new Error("Unable to send email");
+      }
+    } catch (error) {
       console.error("Email send failed", {
-        status: send.status,
-        errors: result.errors || [],
+        message: error?.message,
       });
       return responsePage(
         "Something went wrong",
