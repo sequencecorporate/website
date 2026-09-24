@@ -97,12 +97,9 @@ async function handleContact(request, env) {
       { method: "POST", body: verifyBody },
     );
     const verified = await verification.json();
-    return htmlResponse(
-      `Turnstile diagnostic:<br><br>
-       success: ${verified.success}<br>
-       hostname: ${verified.hostname || "none"}<br>
-       action: ${verified.action || "none"}<br>
-       errors: ${(verified["error-codes"] || []).join(", ") || "none"}`,
+return responsePage(
+  "Turnstile diagnostic",
+  `success: ${verified.success} | hostname: ${verified.hostname || "none"} | action: ${verified.action || "none"} | errors: ${(verified["error-codes"] || []).join(", ") || "none"}`,
   200
 );
     const requestHostname = new URL(request.url).hostname;
