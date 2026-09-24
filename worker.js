@@ -97,6 +97,14 @@ async function handleContact(request, env) {
       { method: "POST", body: verifyBody },
     );
     const verified = await verification.json();
+    return htmlResponse(
+      `Turnstile diagnostic:<br><br>
+       success: ${verified.success}<br>
+       hostname: ${verified.hostname || "none"}<br>
+       action: ${verified.action || "none"}<br>
+       errors: ${(verified["error-codes"] || []).join(", ") || "none"}`,
+  200
+);
     const requestHostname = new URL(request.url).hostname;
 
     // A valid token must have been issued on this deployment and for this form.
