@@ -139,11 +139,15 @@ async function handleContact(request, env) {
         },
       );
 
-      if (!tokenResponse.ok) {
-        const tokenError = await tokenResponse.text();
-        console.error("Microsoft token request failed", tokenResponse.status, tokenError);
-        throw new Error("Unable to authenticate email service");
-      }
+if (!tokenResponse.ok) {
+  const tokenError = await tokenResponse.text();
+
+  return responsePage(
+    "Microsoft authentication diagnostic",
+    `Token request failed with HTTP ${tokenResponse.status}: ${tokenError}`,
+    200
+  );
+}
 
       const tokenJson = await tokenResponse.json();
       const accessToken = tokenJson.access_token;
