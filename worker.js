@@ -177,11 +177,15 @@ if (!tokenResponse.ok) {
         },
       );
 
-      if (!graphResponse.ok) {
-        const graphError = await graphResponse.text();
-        console.error("Microsoft Graph sendMail failed", graphResponse.status, graphError);
-        throw new Error("Unable to send email");
-      }
+if (!graphResponse.ok) {
+  const graphError = await graphResponse.text();
+
+  return responsePage(
+    "Microsoft Graph diagnostic",
+    `HTTP ${graphResponse.status}: ${graphError}`,
+    200
+  );
+}
 } catch (error) {
   return responsePage(
     "Email diagnostic",
