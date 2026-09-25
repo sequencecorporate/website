@@ -182,16 +182,13 @@ if (!tokenResponse.ok) {
         console.error("Microsoft Graph sendMail failed", graphResponse.status, graphError);
         throw new Error("Unable to send email");
       }
-    } catch (error) {
-      console.error("Email send failed", {
-        message: error?.message,
-      });
-      return responsePage(
-        "Something went wrong",
-        "Your message could not be sent. Please try again later.",
-        502,
-      );
-    }
+} catch (error) {
+  return responsePage(
+    "Email diagnostic",
+    `Error: ${error?.message || "Unknown error"}`,
+    200
+  );
+}
 
     return responsePage("Thanks — your message has been sent", "We’ll be in touch.");
   } catch (error) {
