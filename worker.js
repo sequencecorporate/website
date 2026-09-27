@@ -139,15 +139,11 @@ async function handleContact(request, env) {
         },
       );
 
-if (!tokenResponse.ok) {
-  const tokenError = await tokenResponse.text();
-
-  return responsePage(
-    "Microsoft authentication diagnostic",
-    `Token request failed with HTTP ${tokenResponse.status}: ${tokenError}`,
-    200
-  );
-}
+      if (!tokenResponse.ok) {
+        const tokenError = await tokenResponse.text();
+        console.error("Microsoft token request failed", tokenResponse.status, tokenError);
+        throw new Error("Unable to authenticate email service");
+      }
 
       const tokenJson = await tokenResponse.json();
       const accessToken = tokenJson.access_token;
@@ -177,22 +173,21 @@ if (!tokenResponse.ok) {
         },
       );
 
-if (!graphResponse.ok) {
-  const graphError = await graphResponse.text();
-
-  return responsePage(
-    "Microsoft Graph diagnostic",
-    `HTTP ${graphResponse.status}: ${graphError}`,
-    200
-  );
-}
-} catch (error) {
-  return responsePage(
-    "Email diagnostic",
-    `Error: ${error?.message || "Unknown error"}`,
-    200
-  );
-}
+      if (!graphResponse.ok) {
+        const graphError = await graphResponse.text();
+        console.error("Microsoft Graph sendMail failed", graphResponse.status, graphError);
+        throw new Error("Unable to send email");
+      }
+    } catch (error) {
+      console.error("Email send failed", {
+        message: error?.message,
+      });
+      return responsePage(
+        "Something went wrong",
+        "Your message could not be sent. Please try again later.",
+        502,
+      );
+    }
 
     return responsePage("Thanks — your message has been sent", "We’ll be in touch.");
   } catch (error) {
