@@ -1,0 +1,21 @@
+.about-copy h2{font-size:38px}.perspective-tools{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:18px;padding:24px;background:var(--paper);border:1px solid var(--line)}.perspective-tools select{width:100%;padding:12px;font:inherit;color:var(--ink);background:white;border:1px solid #cfd8dd}.perspective-feature{display:grid;grid-template-columns:240px 1fr;gap:48px;padding:42px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.perspective-feature[hidden]{display:none}.feature-mark{padding:32px;background:var(--paper);color:var(--navy);display:flex;flex-direction:column;justify-content:space-between}.feature-mark>span{font-size:72px;font-weight:800;line-height:1}.feature-mark .rule{margin-top:30px}.feature-mark p{font-size:24px;line-height:1.25}.perspective-feature h2{font-size:38px;margin:14px 0}.perspective-feature h2 a{text-decoration:none}.perspective-feature h2 a:hover,.text-link:hover{text-decoration:underline}.text-link{font-weight:800;color:var(--navy)}.article-head h1{max-width:960px}.article-head .eyebrow{margin-top:32px}.article-meta{display:flex;flex-wrap:wrap;gap:12px;color:var(--muted);font-size:14px}.article-meta a{font-weight:700;color:var(--navy)}.article-layout{display:grid;grid-template-columns:240px minmax(0,720px);gap:70px}.article-layout aside{font-size:14px;align-self:start;position:sticky;top:120px}.article-layout aside ol{padding-left:20px}.article-layout aside li{margin:18px 0}.article-layout aside a{text-decoration:none}.article-prose{font-size:18px}.article-prose>h2{font-size:34px}.article-prose section{padding:30px 0;border-bottom:1px solid var(--line);scroll-margin-top:110px}.article-prose section h2{font-size:29px;margin-top:14px}.article-prose blockquote{margin:28px 0;padding:12px 0 12px 24px;border-left:4px solid var(--teal);color:var(--navy);font-size:23px}.author-card{padding:28px;background:var(--paper);margin-top:40px;font-size:16px}.author-card p{margin:8px 0}.draft-note{padding:22px;border:1px solid var(--amber);background:#fffaf0;margin-bottom:36px;font-size:16px}:focus-visible{outline:3px solid var(--teal);outline-offset:4px}
+@media(max-width:820px){.perspective-tools{grid-template-columns:1fr 1fr}.perspective-tools .field:first-child{grid-column:1/-1}.perspective-feature{grid-template-columns:1fr;gap:24px}.feature-mark{display:none}.article-layout{grid-template-columns:1fr;gap:32px}.article-layout aside{position:static;border-bottom:1px solid var(--line)}.perspective-feature h2{font-size:32px}.article-prose{font-size:17px}}
+@media(max-width:520px){.perspective-tools{grid-template-columns:1fr}.perspective-tools .field:first-child{grid-column:auto}.about-copy h2{font-size:30px}}
+
+.article-pull{font-size:25px;line-height:1.45;color:var(--navy);padding:26px 0;border-top:3px solid var(--teal);border-bottom:1px solid var(--line);margin:36px 0}.consider-heading{margin-top:56px}.article-prose li{margin:16px 0}.article-prose p{margin:0 0 24px}.article-prose .author-card p{margin:8px 0}
+
+.about-portrait{display:block;width:100%;height:auto;max-width:320px;border:1px solid var(--line)}
+
+.perspective-categories{font-size:13px;color:var(--navy);font-weight:700;letter-spacing:.02em}
+
+/* Quieter feature hierarchy and explicit business-category labels. */
+.perspective-feature h2{font-size:32px;line-height:1.18}
+.feature-mark>span{font-size:56px}
+.feature-mark p{font-size:20px;line-height:1.35}
+.perspective-categories{margin:22px 0}
+.category-label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.perspective-categories ul{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0}
+.perspective-categories li{padding:5px 11px;border:1px solid var(--line);background:var(--paper);font-size:12px;font-weight:600;color:var(--navy)}
+@media(max-width:820px){.perspective-feature h2{font-size:28px}}
+
+.article-shared-note{position:static!important;background:var(--paper);border-left:3px solid var(--teal);padding:18px 22px;margin:24px 0 12px;font-size:15px!important}.article-shared-note strong{display:block;color:var(--navy);font-size:13px;margin-bottom:7px}.article-shared-note p{margin:0}

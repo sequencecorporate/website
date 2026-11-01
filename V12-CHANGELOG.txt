@@ -1,0 +1,62 @@
+Sequence Corporate V12 — review build, not published
+
+BASELINE
+Exact user-supplied website-main.zip, preserved at ../sequence-v12-source/website-main. Baseline README says V10.
+
+EXISTING FILES CHANGED
+index.html — About/Perspectives navigation links; navigation-v12.css reference.
+how-we-work.html — same navigation additions.
+solutions.html — same navigation additions.
+where-to-start.html — same navigation additions.
+experience.html — same navigation additions.
+contact.html — same navigation additions; form unchanged.
+privacy.html — same navigation additions.
+sitemap.xml — retained all original URLs/lastmod; added About, Perspectives and article URLs.
+
+NEW FILES
+about.html — independent adviser positioning, experience-based biography, photo placeholder, contact/experience links and SEO metadata.
+perspectives.html — single-article feature; keyword/context/subject/date controls; result count, empty state and no-JavaScript fallback; SEO metadata.
+are-we-looking-at-ai-through-the-right-lens.html — full supplied article, subtitle, author, date, category/context, three linked actions, author card, Article structured data and SEO metadata.
+assets/navigation-v12.css — spacing for extra navigation; menu breakpoint up to 1100px.
+assets/perspectives.css — scoped About/editorial styling, responsive controls, pull quote, actions and author card.
+js/perspectives.js — case-insensitive keyword matching, combined filters, ISO date sorting, live count/empty state.
+V12-CHANGELOG.txt — this report.
+
+ARTICLE EDITS
+Rendered Markdown as headings, emphasis and bullets. Preserved supplied wording except tidying punctuation after 'Claude etc.'. Moved teaching reflection before the closing sentence of action 1, so it ends exactly as requested. Four-step progression, deliberate-testing distinction, prompt generation and microphone retained. Date: 26 October 2026. No attribution sliders.
+
+UNCHANGED BYTE-FOR-BYTE
+worker.js; functions/api/contact.js; wrangler.jsonc; _headers; assets/styles.css; assets/sequence-icon.png; assets/sequence-logo.png; js/site.js; robots.txt; README.md.
+
+VERIFICATION
+Passed comparison of every original file. Removing navigation links and stylesheet reference restores each existing HTML page exactly: copy, markup, SEO and form content otherwise unchanged.
+All original sitemap URLs retained. All 176 relative HTML file references resolve.
+JavaScript syntax checks passed for perspectives.js and worker.js.
+Article checks passed: required closing sentence, testing/microphone content, one H1, valid Article JSON and author.
+Local preview HTTP 200. Desktop browser reviewed Perspectives, About and article.
+Nonmatching search shows 0 results and empty state; AI search with both filters shows 1 result; oldest-first control selected successfully. Multi-article ordering cannot be demonstrated with one article.
+Responsive CSS implemented; narrow-screen visual verification unavailable in current browser tooling.
+Contact backend not invoked; no test email sent. Contact source/configuration preserved; live delivery not retested.
+
+DELIVERY
+Preview: http://127.0.0.1:8123/perspectives.html while preview server is running.
+Review archive: ../sequence-corporate-v12-review.zip.
+Nothing pushed, deployed or published. Production settings/secrets unchanged.
+
+LOCAL TOOLS OUTSIDE ARCHIVE
+build-v12.cjs, finalize-v12.cjs and article-body.html used for initial assembly; do not rerun generators on final output.
+verify-v12.cjs checks preservation, links and article requirements.
+preview-v12.cjs is a localhost-only static preview; it does not run the Worker or deliver enquiries.
+
+About revision: added supplied Kevin portrait (assets/kevin-maguire.png), applied agreed third-person biography with FTSE-listed experience and no named employer, removed independent-adviser label and extra tagline, updated About metadata, and added View Kevin on LinkedIn.
+
+Navigation/category revision: About moved immediately after Home on all ten pages. Perspectives introduction now says reflections. Context replaced by searchable business-category input with Listed, Private, SME and Start-up suggestions; the general AI article is tagged for all four. Matching is case-insensitive and supports partial category names. Subject and date filters retained.
+
+Perspectives visual refinement: business categories now appear as individually bordered labels under a Business categories caption; feature headline reduced from 38px to 32px (mobile 32px to 28px), grey-panel number from 72px to 56px and panel text from 24px to 20px.
+Article audience-label refinement: Business categories changed to Relevant to.
+
+AI article revision (1 November): removed bold emphasis within Three things worth considering; replaced holiday anecdote sentence, effort pullout and confidential-information sentence with Kevin’s supplied wording.
+
+AI article: improved confidentiality sentence moved below Three things worth considering as an unnumbered, visually distinct note labelled A note for all three; removed from action 3.
+
+Reading time: 5 min read added to article metadata and Perspectives listing, estimated from 1084 words at 225 words per minute, rounded up. No analytics or engagement services activated.
