@@ -1,0 +1,4 @@
+.perspective-proposition .proposition-quotes p{margin:0;padding:10px 0;border-bottom:1px solid var(--line)}
+.perspective-proposition .proposition-quotes p:first-child{padding-top:0}
+.perspective-proposition .proposition-quotes p:last-child{border-bottom:0;padding-bottom:0}
+.perspective-proposition .proposition-answer{margin-top:22px;color:var(--navy)}
